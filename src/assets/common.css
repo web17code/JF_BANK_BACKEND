@@ -1,0 +1,16 @@
+.pageCss{
+  margin-top:20px;
+  margin-left:20px;
+}
+.toolBar{
+  float: left;
+  margin-right: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.toolBarContent{
+  overflow: hidden;
+  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-left: 10px;
+}
