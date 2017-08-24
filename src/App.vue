@@ -90,6 +90,10 @@
             <Icon type="ios-analytics" :size="18"></Icon>
             <span class="layout-text">日志管理</span>
           </Menu-item>
+          <Menu-item name="Menu">
+            <Icon type="ios-analytics" :size="18"></Icon>
+            <span class="layout-text">菜单管理</span>
+          </Menu-item>
         </Menu>
       </i-col>
       <i-col span="21">

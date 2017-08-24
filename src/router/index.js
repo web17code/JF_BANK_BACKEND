@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import Dictionary from '../components/Dictionary'
 import Log from '../components/Log'
 import User from '../components/User'
+import Menu from '../components/Menu'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path:'/Log',
       name:'日志管理',
       component:Log
+    },
+    {
+      path:'/Menu',
+      name:'菜单路由',
+      component:Menu
     }
   ]
 })
