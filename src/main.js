@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.use(iview)
 Vue.use(resource)
 Vue.prototype.utils = utils;
-window.getHost = "http://192.168.1.217:8089/"
+window.getHost = "http://192.168.1.217/school-bank-web/"
 
 /* eslint-disable no-new */
 new Vue({

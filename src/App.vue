@@ -94,6 +94,14 @@
             <Icon type="ios-analytics" :size="18"></Icon>
             <span class="layout-text">菜单管理</span>
           </Menu-item>
+          <Menu-item name="Role">
+            <Icon type="person" :size="18"></Icon>
+            <span class="layout-text">角色管理</span>
+          </Menu-item>
+          <Menu-item name="App">
+            <Icon type="hammer" :size="18"></Icon>
+            <span class="layout-text">应用管理</span>
+          </Menu-item>
         </Menu>
       </i-col>
       <i-col span="21">

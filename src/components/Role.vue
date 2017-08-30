@@ -1,65 +1,38 @@
 <style scoped>
-  /*该项目仅在开发时使用，用来配置菜单和路由*/
+    /**
+    * Created by web17code
+    */
+
 </style>
 
 <template>
-  <div>
-    <!--工具条-->
-    <div class="toolBarContent">
-      <div class="toolBar" @click="addInfo('addFrom')">
-        <Icon type="plus-round" :size="18"></Icon>&nbsp;&nbsp;新增
+    <div>
+      <!--工具条-->
+      <div class="toolBarContent">
+        <div class="toolBar" @click="addInfo('addFrom')">
+          <Icon type="plus-round" :size="18"></Icon>&nbsp;&nbsp;新增
+        </div>
+        <!--<div class="toolBar" @click="editInfo('addFrom')">-->
+          <!--<Icon type="edit" :size="18"></Icon>&nbsp;&nbsp;修改-->
+        <!--</div>-->
+        <!--<div class="toolBar" @click="deleteInfo">-->
+          <!--<Icon type="trash-a" :size="18"></Icon>&nbsp;&nbsp;删除-->
+        <!--</div>-->
+        <!--<div class="toolBar" @click="refreshInfo">-->
+          <!--<Icon type="refresh" :size="18"></Icon>&nbsp;&nbsp;刷新-->
+        <!--</div>-->
       </div>
-      <div class="toolBar" @click="editInfo('addFrom')">
-        <Icon type="edit" :size="18"></Icon>&nbsp;&nbsp;修改
-      </div>
-      <div class="toolBar" @click="deleteInfo">
-        <Icon type="trash-a" :size="18"></Icon>&nbsp;&nbsp;删除
-      </div>
-      <div class="toolBar" @click="refreshInfo">
-        <Icon type="refresh" :size="18"></Icon>&nbsp;&nbsp;刷新
-      </div>
-      <div class="toolBar" @click="lookMenuIcon">
-        <Icon type="grid" :size="18"></Icon>&nbsp;&nbsp;查看菜单图标
-      </div>
+      <!--列表-->
+      <Table border
+             :columns="columns"
+             :data="dataList"
+             @on-selection-change="getItem"></Table>
+      <!--分页-->
+      <Page :total="total" :current="current"
+            @on-change="skipPage"
+            show-elevator show-total
+            class="pageCss"></Page>
     </div>
-    <!--列表-->
-    <Table border
-           :columns="columns"
-           :data="dataList"
-           @on-selection-change="getItem"></Table>
-    <!--分页-->
-    <Page :total="total" :current="current"
-          @on-change="skipPage"
-          show-elevator show-total
-          class="pageCss"></Page>
-    <!--addInfoModal 增加信息或修改信息的对话框-->
-    <Modal
-      ref="addForm"
-      v-model="showFormModal"
-      :title="ModalTitle"
-      :loading="false"
-    >
-      <Form ref="addFrom" :model="formValidate" :rules="ruleValidate" :label-width="80">
-        <Form-item label="菜单文字" prop="menuName">
-          <Input v-model="formValidate.menuName" placeholder="请输入菜单文字"></Input>
-        </Form-item>
-        <Form-item label="菜单路由(菜单的名字)" prop="menuUrl">
-          <Input v-model="formValidate.menuUrl" placeholder="请输入菜单名字（）作为路由使用"></Input>
-        </Form-item>
-        <Form-item label="菜单图标" prop="menuIcon">
-          <Input v-model="formValidate.menuIcon" placeholder="请输入系统提供的图标名称"></Input>
-        </Form-item>
-        <Form-item label="描述" prop="menuContent">
-          <Input v-model="formValidate.menuContent" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-                 placeholder="请输入..."></Input>
-        </Form-item>
-        <Form-item>
-          <Button type="primary" @click="handleSubmit('addFrom')">提交</Button>
-          <Button type="ghost" @click="handleReset('addFrom')" style="margin-left: 8px">重置</Button>
-        </Form-item>
-      </Form>
-    </Modal>
-  </div>
 </template>
 
 <script>
@@ -102,7 +75,6 @@
         submitUrl: "",//表单提交的url
         //表单数据
         formValidate: {
-          id:'',
           menuUrl: '',
           menuName: '',
           menuIcon: '',
@@ -141,6 +113,7 @@
       //获取选中的数据
       getItem: function (item, row) {
         this.selectData = item;
+        console.log(item)
       },
       //添加按钮显示模态框
       addInfo: function (name) {
@@ -163,18 +136,20 @@
         this.ModalTitle = "修改用户信息";
         this.showFormModal = true;
         //再为表单赋值
+        this.formValidate["id"] = this.selectData[0]["id"];
         for (var key in this.formValidate) {
           this.formValidate[key] = this.selectData[0][key];
         }
       },
       //删除的请求
       http_delete: function () {
+
         var idARR = [];
         for (var i = 0; i < this.selectData.length; i++) {
           idARR.push(this.selectData[i]["id"]);
         }
         this.$http.post(window.getHost + 'menu/deleteBatch',
-          { ids: idARR.join(',')},{emulateJSON: true}).then(function (data) {
+          { id: idARR},{emulateJSON: true}).then(function (data) {
           if (data.data.status == 200) {
             this.$Message.success("删除成功！");
             this.getList();
@@ -225,11 +200,10 @@
                 menuContent: that.formValidate.menuContent,
                 menuIcon: that.formValidate.menuIcon
               }, {emulateJSON: true}).then(function (data) {
+                console.log(data);
                 if (data.data.status == 200) {
                   that.$Message.success(that.submitMsg);
-                  this.getList();
                   this.$refs[name].resetFields();
-                  document.getElementsByClassName('ivu-icon-ios-close-empty')[0].click();//关闭弹框
                 }
 
               });
