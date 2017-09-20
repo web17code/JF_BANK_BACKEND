@@ -82,25 +82,29 @@
             <Icon type="ios-navigate" :size="18"></Icon>
             <span class="layout-text">数据字典</span>
           </Menu-item>
-          <Menu-item name="User">
-            <Icon type="ios-keypad" :size="18"></Icon>
-            <span class="layout-text">用户管理</span>
-          </Menu-item>
-          <Menu-item name="Log">
-            <Icon type="ios-analytics" :size="18"></Icon>
-            <span class="layout-text">日志管理</span>
-          </Menu-item>
+          <!--<Menu-item name="User">-->
+            <!--<Icon type="ios-keypad" :size="18"></Icon>-->
+            <!--<span class="layout-text">用户管理</span>-->
+          <!--</Menu-item>-->
+          <!--<Menu-item name="Log">-->
+            <!--<Icon type="ios-analytics" :size="18"></Icon>-->
+            <!--<span class="layout-text">日志管理</span>-->
+          <!--</Menu-item>-->
           <Menu-item name="Menu">
             <Icon type="ios-analytics" :size="18"></Icon>
             <span class="layout-text">菜单管理</span>
           </Menu-item>
-          <Menu-item name="Role">
-            <Icon type="person" :size="18"></Icon>
-            <span class="layout-text">角色管理</span>
-          </Menu-item>
+          <!--<Menu-item name="Role">-->
+            <!--<Icon type="person" :size="18"></Icon>-->
+            <!--<span class="layout-text">角色管理</span>-->
+          <!--</Menu-item>-->
           <Menu-item name="App">
             <Icon type="hammer" :size="18"></Icon>
             <span class="layout-text">应用管理</span>
+          </Menu-item>
+          <Menu-item name="uploadTable">
+            <Icon type="ios-cloud-upload" :size="18"></Icon>
+            <span class="layout-text">上传表格</span>
           </Menu-item>
         </Menu>
       </i-col>

@@ -1,0 +1,131 @@
+<style scoped>
+  /**
+  * Created by web17code
+  */
+  .title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 16px;
+    padding-left: 10px;
+  }
+
+  .submit_btn {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<template>
+  <div>
+    <div style="height:45vh;overflow: auto;">
+      <p class="title">模板下载</p>
+      <Table :columns="columns1" :data="data1"></Table>
+    </div>
+    <div>
+      <p class="title">导入Excel</p>
+      <div style="overflow: hidden">
+        <Upload
+          :action="uploadUrl"
+          name="fileName"
+          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          :show-upload-list="false"
+          :on-success="handleSuccess"
+          :on-error="handleError">
+          <Button type="ghost" icon="ios-cloud-upload-outline">选择要上传文件的excel文件</Button>
+        </Upload>
+        <div v-if="file !== null">待上传文件：{{ file.name }}</div>
+        <Input v-model="remarkes" type="textarea" :rows="4" placeholder="请输入..."></Input>
+        <Button type="primary" @click="upload" :loading="loadingStatus" class="submit_btn">
+          {{ loadingStatus ? '上传中' : '点击上传' }}
+        </Button>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  export default {
+    data: function () {
+      return {
+        columns1: [
+          {
+            width: 100,
+            align: "center",
+            title: '序号',
+            key: 'name'
+          },
+          {
+            align: "center",
+            title: '类型',
+            key: 'age'
+          },
+          {
+            align: "center",
+            title: '操作',
+            render: function (h, params) {
+              return h("a", {
+//                attrs:{
+//                    href:''
+//                }
+              }, "下载")
+            }
+          }
+        ],
+        data1: [
+          {
+            name: '1',
+            age: "微课",
+            address: '北京市朝阳区芍药居'
+          },
+          {
+            name: '2',
+            age: "得力活动",
+            address: '北京市海淀区西二旗'
+          }
+        ],
+        excelPath: "",//上传到服务器上的excel文件路径
+        uploadUrl: window.getHost + "upload/excel",
+        remarkes: "",
+        file: null,
+        loadingStatus: false
+      }
+    },
+    methods: {
+      handleError: function (error, file, fileList) {
+        this.$Message.error('选择文件失败')
+        this.excelPath = "";
+      },
+      handleSuccess: function (response, file, fileList) {
+        this.excelPath = response.data.excelPath;
+        this.$Message.success('已选择' + file.name + '文件');
+      },
+      upload: function () {
+        var that = this;
+        if (this.excelPath == "") {
+          this.$Message.error('请先选择文件')
+          return false;
+        }
+        this.loadingStatus = true;
+        this.$http.post(window.getHost + "money/importExcel", {
+          excelPath: that.excelPath,
+          content: that.remarkes
+        }, {emulateJSON: true}).then(function (data) {
+          that.$Message.success(data.data.msg)
+          that.loadingStatus = false;
+          that.excelPath = "";
+          that.remarkes = "";
+          return false;
+        }, function () {
+          that.remarkes = "";
+          that.loadingStatus = false;
+          that.$Message.error("导入失败")
+          return false;
+        })
+      }
+    },
+    components: {}
+  }
+</script>

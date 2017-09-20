@@ -8,6 +8,7 @@ import Menu from '../components/Menu.vue'
 import MenuIcon from '../components/MenuIcon.vue'
 import Role from '../components/Role.vue'
 import App from '../components/App.vue'
+import uploadTable from '../components/uploadTable.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path:'/App',
       name:'应用管理',
       component:App
+    },
+    {
+      path:'/uploadTable',
+      name:'上传处理',
+      component:uploadTable
     }
   ]
 })

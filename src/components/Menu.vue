@@ -130,7 +130,7 @@
     methods: {
       //获取列表
       getList: function () {
-        this.$http.get(window.getHost + 'menu/list',
+        this.$http.get(window.getHost + 'menu/list?R='+Math.random(),
           {
             params: {page: this.current, rows: 10}
           }).then(function (data) {
