@@ -59,6 +59,28 @@
         </Form-item>
       </Form>
     </Modal>
+    <Modal
+      ref="roleAndMenu"
+      v-model="show_roleAndMenu_Modal"
+      @on-ok="changeRoleMenu"
+      title="角色授权"
+      :loading="false"
+    >
+      <Form ref="roleAndMenuFrom" :model="roleAndMenuData" :label-width="80">
+        <p>该路径{{changeMenuRole.menuUrl}}将授予以下角色:</p>
+        <Form-item label="" >
+          <!--<Input v-model="roleAndMenuData.txt" placeholder="请输入菜单文字"></Input>-->
+          <CheckboxGroup v-model="social">
+            <Checkbox :label="item.id" v-for="item in Roledata" :key="item.id">
+              <span>{{item.roleName}}</span>
+            </Checkbox>
+          </CheckboxGroup>
+        </Form-item>
+        <!--<Form-item>-->
+          <!--<Button type="primary" @click="changeRoleMenu('roleAndMenuFrom')">提交</Button>-->
+        <!--</Form-item>-->
+      </Form>
+    </Modal>
   </div>
 </template>
 
@@ -66,6 +88,8 @@
   export default {
     data: function () {
       return {
+        //角色数据
+        Roledata:[],
         //列头项
         columns: [
           {
@@ -92,6 +116,20 @@
           {
             title: '菜单描述',
             key: 'menuContent'
+          },
+          {
+            align:"center",
+            title:"操作",
+            render:(h,params) => {
+              return h("Button",{
+                /*https://cn.vuejs.org/v2/guide/render-function.html*/
+                on:{
+                    click:() => {
+                        this.roleAndMenu(params);
+                    }
+                }
+              },"授予角色")
+            }
           }
         ],
         dataList: [],//菜单列表数据
@@ -107,6 +145,10 @@
           menuName: '',
           menuIcon: '',
           menuContent: ''
+        },
+        //角色数据
+        roleAndMenuData:{
+          txt:""
         },
         //表单校验规则
         ruleValidate: {
@@ -125,9 +167,19 @@
         },
         ModalTitle: "",//莫态框的标题
         showFormModal: false,//控制addInfo模态框的显示隐藏
+        show_roleAndMenu_Modal:false,//控制角色菜单的模态框的显示隐藏
+        changeMenuRole:{},
+        social:[]
       }
     },
     methods: {
+      //獲取角色列表
+      getRoleList:function(){
+        this.$http.post(window.getHost + 'role/list?R='+Math.random(),
+          {}, {emulateJSON: true}).then(function (data) {
+          this.Roledata = data.data.data;
+        })
+      },
       //获取列表
       getList: function () {
         this.$http.get(window.getHost + 'menu/list?R='+Math.random(),
@@ -240,13 +292,49 @@
       handleReset: function (name) {
         this.$refs[name].resetFields();
       },
+      //修改菜單授予的角色
+      changeRoleMenu:function(name){
+          var that = this;
+          console.log("提交角色授予修改");
+          console.log(this.social);
+        //rmenu/add/batch
+        that.$http.post(window.getHost +"rmenu/add/batch", {
+          fkMenu:that.changeMenuRole.id,
+          fkRoles:that.social.join(',')
+        }, {emulateJSON: true}).then(function (data) {
+            if (data.data.status == 200) {
+              that.$Message.success("授权菜单角色成功");
+            }else{
+              that.$Message.error("授权菜单角色失败");
+            }
+        })
+      },
       skipPage: function (current) {
         this.current = current;
         this.getList();
+      },
+      //獲取到角色授予請況展開模態框
+      roleAndMenu:function(params){
+        var that = this;
+        console.log("獲取授予的角色");
+        this.changeMenuRole = params.row;//該行的菜單數據
+        console.log(this.changeMenuRole);
+        this.$http.post(window.getHost + 'role/menuList?R='+Math.random(),
+          {fkMenu:params.row.id}, {emulateJSON: true}).then(function (data) {
+          if(data.data.status==200){
+            that.show_roleAndMenu_Modal = true;
+            var array = [];
+            for(var i=0; i<data.data.data.length;i++){
+              array[i] = data.data.data[i].id;
+            }
+            that.social = array;
+          }
+        })
       }
     },
     created: function () {//初始化列表
       this.getList();
+      this.getRoleList();
     }
   }
 </script>

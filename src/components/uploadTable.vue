@@ -32,7 +32,8 @@
           accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           :show-upload-list="false"
           :on-success="handleSuccess"
-          :on-error="handleError">
+          :on-error="handleError"
+          :with-credentials="isTrue">
           <Button type="ghost" icon="ios-cloud-upload-outline">选择要上传文件的excel文件</Button>
         </Upload>
         <div v-if="file !== null">待上传文件：{{ file.name }}</div>
@@ -43,13 +44,13 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
   export default {
     data: function () {
       return {
+        isTrue:true,
         columns1: [
           {
             width: 100,
@@ -114,6 +115,13 @@
           content: that.remarkes
         }, {emulateJSON: true}).then(function (data) {
           that.$Message.success(data.data.msg)
+          if(data.data.status==200){
+            this.$http.post(window.getHost + "money/download/errorExcel", {
+              excelPath: that.excelPath
+            }, {emulateJSON: true}).then(function (data) {
+              console.log(data);
+            })
+          }
           that.loadingStatus = false;
           that.excelPath = "";
           that.remarkes = "";
