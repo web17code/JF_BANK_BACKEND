@@ -26,6 +26,7 @@
     <Table border
            :columns="columns"
            :data="dataList"
+           no-data-text=""
            @on-selection-change="getItem"></Table>
     <!--分页-->
     <Page :total="total" :current="current"

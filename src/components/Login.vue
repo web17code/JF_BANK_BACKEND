@@ -12,21 +12,21 @@
 <template>
   <div>
     <h2 style="margin-top: 100px;text-align: center;">欢迎登陆积分银行
-      <p style="text-align: center;" @click="loginOut">注销登录</p>
-      <p style="text-align: center;" @click="getUserInfo">获取用户信息</p>
+      <!--<p style="text-align: center;" @click="loginOut">注销登录</p>-->
+      <!--<p style="text-align: center;" @click="getUserInfo">获取用户信息</p>-->
     </h2>
-    <Form ref="login" :model="formItem" :label-width="100" style="width: 500px;padding-top: 100px;margin: 0 auto;">
-      <Form-item label="用户名" prop="userName">
-        <Input v-model="formItem.userName" placeholder="请输入" style="width: 300px"></Input>
-      </Form-item>
-      <Form-item label="密码" prop="pwd">
-        <Input v-model="formItem.pwd" placeholder="请输入" style="width: 300px" type="password"></Input>
-      </Form-item>
-      <Form-item>
-        <Button type="primary" @click="handleSubmit()">提交</Button>
-        <Button type="ghost" @click="resetData('login')" style="margin-left: 8px">取消</Button>
-      </Form-item>
-    </Form>
+    <!--<Form ref="login" :model="formItem" :label-width="100" style="width: 500px;padding-top: 100px;margin: 0 auto;">-->
+      <!--<Form-item label="用户名" prop="userName">-->
+        <!--<Input v-model="formItem.userName" placeholder="请输入" style="width: 300px"></Input>-->
+      <!--</Form-item>-->
+      <!--<Form-item label="密码" prop="pwd">-->
+        <!--<Input v-model="formItem.pwd" placeholder="请输入" style="width: 300px" type="password"></Input>-->
+      <!--</Form-item>-->
+      <!--<Form-item>-->
+        <!--<Button type="primary" @click="handleSubmit()">提交</Button>-->
+        <!--<Button type="ghost" @click="resetData('login')" style="margin-left: 8px">取消</Button>-->
+      <!--</Form-item>-->
+    <!--</Form>-->
   </div>
 </template>
 <script>

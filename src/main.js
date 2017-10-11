@@ -20,8 +20,8 @@ Vue.http.interceptors.push(function(request, next) {//拦截器
 
 //Vue.prototype.utils = utils;
 //window.getHost = "http://192.168.1.111/bank/"
-window.getHost = "http://192.168.1.217/school-bank-web/"
-//window.getHost = "http://192.168.1.110/school-bank-web/";
+//window.getHost = "http://192.168.1.217/school-bank-web/"
+window.getHost = "http://192.168.1.131/school-bank-web/";
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

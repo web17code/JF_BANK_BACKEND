@@ -21,7 +21,10 @@
   <div>
     <div style="height:45vh;overflow: auto;">
       <p class="title">模板下载</p>
-      <Table :columns="columns1" :data="data1"></Table>
+      <Table :columns="columns1"
+             :data="data1"
+             no-data-text=""
+             :loading=loading></Table>
     </div>
     <div>
       <p class="title">导入Excel</p>
@@ -50,7 +53,8 @@
   export default {
     data: function () {
       return {
-        isTrue:true,
+        loading: false,
+        isTrue: true,
         columns1: [
           {
             width: 100,
@@ -68,9 +72,10 @@
             title: '操作',
             render: function (h, params) {
               return h("a", {
-//                attrs:{
-//                    href:''
-//                }
+                attrs: {
+                  href: params.row.source,
+                  target: "_Blank"
+                }
               }, "下载")
             }
           }
@@ -78,13 +83,8 @@
         data1: [
           {
             name: '1',
-            age: "微课",
-            address: '北京市朝阳区芍药居'
-          },
-          {
-            name: '2',
-            age: "得力活动",
-            address: '北京市海淀区西二旗'
+            age: "学分批量导入模板",
+            source: "../template/学分批量导入模板.xlsx"
           }
         ],
         excelPath: "",//上传到服务器上的excel文件路径
@@ -115,12 +115,22 @@
           content: that.remarkes
         }, {emulateJSON: true}).then(function (data) {
           that.$Message.success(data.data.msg)
-          if(data.data.status==200){
-            this.$http.post(window.getHost + "money/download/errorExcel", {
-              excelPath: that.excelPath
-            }, {emulateJSON: true}).then(function (data) {
-              console.log(data);
-            })
+          if (data.data.status == 200) {
+            /*this.$http.post(window.getHost + "money/download/errorExcel", {
+             excelPath: that.excelPath
+             }, {emulateJSON: true}).then(function (data) {
+             console.log(data);
+             })*/
+            /*下载start*/
+            var elemIF = document.createElement("iframe");
+            elemIF.id = "downLoadIframe";
+            elemIF.src = window.getHost + "money/download/errorExcel?excelPath=" + that.excelPath;
+            elemIF.style.display = "none";
+            document.body.appendChild(elemIF);
+            setTimeout(function () {
+              document.getElementById("downLoadIframe").parentNode.removeChild(document.getElementById("downLoadIframe"));
+            }, 500)
+            /*window.open(window.getHost + "money/download/errorExcel?excelPath="+that.excelPath);*/
           }
           that.loadingStatus = false;
           that.excelPath = "";
