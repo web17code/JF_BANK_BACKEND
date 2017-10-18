@@ -78,10 +78,10 @@
       <i-col span="3" class="layout-menu-left">
         <Menu :active-name="$route.path.substring(1)" theme="dark" width="auto" @on-select="goRouter">
           <!--<div class="layout-logo-left"></div>-->
-          <Menu-item name="Dictionary">
+          <!--<Menu-item name="Dictionary">
             <Icon type="ios-navigate" :size="18"></Icon>
             <span class="layout-text">数据字典</span>
-          </Menu-item>
+          </Menu-item>-->
           <!--<Menu-item name="User">-->
             <!--<Icon type="ios-keypad" :size="18"></Icon>-->
             <!--<span class="layout-text">用户管理</span>-->
@@ -109,11 +109,16 @@
         </Menu>
       </i-col>
       <i-col span="21">
-        <div class="layout-breadcrumb">
+        <div class="layout-breadcrumb" style="overflow: hidden;">
           <Breadcrumb>
             <Breadcrumb-item >后台管理</Breadcrumb-item>
             <Breadcrumb-item >{{$route.name}}</Breadcrumb-item>
+            <a href="logout.jsp" style="float: right;color: #666;">注销</a>
+            <a style="float: right;color: #666;padding-right: 15px;cursor: default;">
+              {{nowName}}
+            </a>
           </Breadcrumb>
+
         </div>
         <div class="layout-content">
           <div class="layout-content-main">
@@ -130,15 +135,27 @@
 <script>
   export default {
     data () {
-      return {}
+      return {
+        nowName:""
+      }
     },
-    computed: {},
     methods: {
       goRouter: function (name) {
         this.$router.push({path: name})
         //this.$router.push({path: name, query: {user: "zhuhj"}})
         //this.$router.push({path: name, params:{user: "zhuhj"}})
+      },
+      getAccountInfo: function () {
+        var that = this;
+        this.$http.post(window.getHost + "money/account",
+          {},
+          {emulateJSON: true}).then(function (data) {
+          that.nowName = data.data.data.XM;
+        })
       }
+    },
+    created:function () {
+      this.getAccountInfo();
     }
   }
 </script>
